@@ -1,0 +1,52 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>USA MAP</title>
+    <script src="src/index.js"></script>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="style.css" rel="stylesheet">
+    
+</head>
+
+<body onload="yourName()">
+
+    <div class="grid-container">
+        <div id="grid-left" class="grid-left">
+
+        </div>
+        <div id="grid-right" class="grid-right">
+            <br><h2>What states have you visited?</h2>
+            <svg width="960" height="600" id="statesvg"> <!-- svg to hold the map. -->
+                <div id="label"><!-- div to hold label. -->
+                    <script>
+                        function labelHtml(n, d){	/* function to create html content string in label div. */
+                            return "<h4>"+n+"</h4>";
+                        }
+                        const sampleData ={};	/* Sample random data. */	
+                        ["HI", "AK", "FL", "SC", "GA", "AL", "NC", "TN", "RI", "CT", "MA",
+                        "ME", "NH", "VT", "NY", "NJ", "PA", "DE", "MD", "WV", "KY", "OH", 
+                        "MI", "WY", "MT", "ID", "WA", "DC", "TX", "CA", "AZ", "NV", "UT", 
+                        "CO", "NM", "OR", "ND", "SD", "NE", "IA", "MS", "IN", "IL", "MN", 
+                        "WI", "MO", "AR", "OK", "KS", "LA", "VA"]
+                            .forEach(function(d){ 
+                                let low=Math.round(100*Math.random()), 
+                                    mid=Math.round(100*Math.random()), 
+                                    high=Math.round(100*Math.random());
+                                sampleData[d]={low:d3.min([low,mid,high]), high:d3.max([low,mid,high]), avg:Math.round((low+mid+high)/3)}; 
+                            });
+                        /* draw states on id #statesvg */	
+                        uStates.draw("#statesvg", sampleData, labelHtml);
+                        d3.select(self.frameElement).style("height", "600px"); 
+                    </script>
+                </div>
+            </svg>
+        </div>
+      </div>
+
+
+
+
+</body>
+</html>
