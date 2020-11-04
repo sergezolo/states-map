@@ -47,3 +47,28 @@ H2 {
 .grid-right {
     text-align: center;
 }
+
+.fullscreen {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+    text-align: center;
+    padding: 200px 0;
+    background: #1a1d32; 
+}
+
+input[type=submit]{
+    background-color: #2c436d;
+    border: none;
+    color: white;
+    padding: 3px 100px;
+    text-decoration: none;
+    margin: 4px 2px;
+    cursor: pointer;
+  }
+  
+  input[type=submit]:hover {
+    background-color: #066406;
+    color: white;
+  }

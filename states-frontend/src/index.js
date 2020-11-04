@@ -1,44 +1,55 @@
-const BASE_URL = 'http://localhost:3000'
+const BASE_URL = 'http://localhost:3000';
 
-document.addEventListener("DOMContentLoaded", () => {
-	showUpdate()
-	getStatesOutlines();
-})
+document.addEventListener('DOMContentLoaded', function() {
+    newUserForm();
+});
 
-function yourName(){
-	const username = prompt("Hello! What is your name?");
-	if(username != null && isNaN(username) & username != ""){
-		document.getElementById("grid-left").innerHTML += "Hello, " + username + "!";
-	}else{
-		alert("Please enter your name!")
-		yourName();
+function newUserForm() {
+	const userForm =	`<div class="fullscreen" id="new-user-form">
+							<h2>Welcome traveler!</h2>
+							<h2>What is your name?"</h2><br>
+							<form>
+								<input type="text" id="username" username="username" required minlength="2" placeholder="Name" size="30">
+								<br><input type="submit" value="Lets go!">
+							</form>
+						</div>`;
+	const userName = document.getElementById("user-form");
+	userName.innerHTML = userForm;
+	document.getElementById("new-user-form").addEventListener("submit", createUser)
+}
+
+function createUser() {
+	event.preventDefault();
+    const user = {
+		username: document.getElementById("username").value,
 	}
-}
-
-
-function showUpdate() {
-
-    popup("Please enter your name","", function(name) {
-        if (name!=null)
-        {
-            x="Hello " + name + "! How are you today?";
-            alert("Input : "+name); // <== I left this one alone, looks like debugging
+    fetch(BASE_URL + "/users", {
+		method: "POST",
+		body: JSON.stringify(user),
+		headers: { 
+            "Content-Type": "application/json",
+            "Accept": "application/json"
         }
-    });
+	})
+	.then(response => response.json())
+	.then(user => {
+		debugger
+		document.getElementById("username").innerHTML += "Hello, " + `${user.username}` + "!";
+	})
+	clearForm();
 }
 
-
+function clearForm(){
+	const welcomePage = document.getElementById("new-user-form");
+	welcomePage.remove()
+}
 
 function getStatesOutlines(){
 	fetch(BASE_URL + "/states")
 	.then(response => response.json())
 	.then(statesData => {
-		const statesList = statesData.map(state => state.state);
 		const statesOutlines = statesData.map(({abbreviation, state, outline}) => ({abbreviation, state, outline}));
-		const statesMap = statesOutlines.map(state => ({id: state.abbreviation, n: state.state, d: state.outline}));
-		console.log(statesList);
-		console.log(statesMap);
-		// return statesMap;
+		let StatesMap = statesOutlines.map(state => ({id: state.abbreviation, n: state.state, d: state.outline}));
 	})
 }
 
