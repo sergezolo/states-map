@@ -1,7 +1,11 @@
 const BASE_URL = 'http://localhost:3000';
+const statesForm = document.getElementById("state-form");
 
-document.addEventListener('DOMContentLoaded', function() {
-    newUserForm();
+document.addEventListener('DOMContentLoaded', () => {
+	newUserForm();
+	getStatesOutlines();
+	addStateForm();
+
 });
 
 function newUserForm() {
@@ -33,7 +37,6 @@ function createUser() {
 	})
 	.then(response => response.json())
 	.then(user => {
-		debugger
 		document.getElementById("username").innerHTML += "Hello, " + `${user.username}` + "!";
 	})
 	clearForm();
@@ -45,15 +48,79 @@ function clearForm(){
 }
 
 function getStatesOutlines(){
-	fetch(BASE_URL + "/states")
+	return fetch(BASE_URL + "/states")
 	.then(response => response.json())
 	.then(statesData => {
 		const statesOutlines = statesData.map(({abbreviation, state, outline}) => ({abbreviation, state, outline}));
-		let StatesMap = statesOutlines.map(state => ({id: state.abbreviation, n: state.state, d: state.outline}));
+		const statesMap = statesOutlines.map(state => ({id: state.abbreviation, n: state.state, d: state.outline}));
 	})
 }
 
+function statesList(){
+	return (`
+		<form>
+			<select name="state-dropdown" id="state-dropdown"></select>
+			<input type="submit" value="ok">
+		</form>
+	`)
+}
+
+function addStateForm(){
+	return fetch(BASE_URL + "/states")
+	.then(response => response.json())
+	.then(statesData => {
+		statesData.forEach( function(state) { 
+			const option = document.createElement("option");
+			option.textContent = state.state;
+			option.id = state.id;
+			option.value = state.state;
+			document.getElementById('state-dropdown').appendChild(option);
+		});
+	});
+}
+
+function createUserState() {
+	event.preventDefault();
+	const state = document.getElementById("state-dropdown").value;
+    fetch(BASE_URL + "/user_states", {
+		method: "POST",
+		body: JSON.stringify(state),
+		headers: { 
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        }
+	})
+	.then(response => response.json())
+	.then(state => {
+		let x = document.createElement("LI"),
+		t = document.createTextNode(state);
+		x.appendChild(t);
+		document.querySelector("ul").appendChild(x);
+	})
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 (function(){
+
+
 	const uStatePaths = 
 	[
 {id:"HI",n:"Hawaii",d:"M233.08751,519.30948L235.02744,515.75293L237.2907,515.42961L237.61402,516.23791L235.51242,519.30948L233.08751,519.30948ZM243.27217,515.59127L249.4153,518.17784L251.51689,517.85452L253.1335,513.97465L252.48686,510.57977L248.28366,510.09479L244.24213,511.87306L243.27217,515.59127ZM273.9878,525.61427L277.706,531.11074L280.13092,530.78742L281.26255,530.30244L282.7175,531.59573L286.43571,531.43407L287.40568,529.97912L284.49577,528.20085L282.55584,524.48263L280.45424,520.92609L274.63444,523.83599L273.9878,525.61427ZM294.19545,534.50564L295.48874,532.5657L300.17691,533.53566L300.82356,533.05068L306.96668,533.69732L306.64336,534.99062L304.05678,536.44556L299.69193,536.12224L294.19545,534.50564ZM299.53027,539.67879L301.47021,543.55866L304.54176,542.42703L304.86509,540.81041L303.24848,538.70882L299.53027,538.3855L299.53027,539.67879ZM306.4817,538.54716L308.74496,535.63726L313.43313,538.06218L317.79798,539.19381L322.16284,541.94205L322.16284,543.88198L318.6063,545.66026L313.75645,546.63022L311.33154,545.17527L306.4817,538.54716ZM323.13281,554.06663L324.74942,552.77335L328.14431,554.38997L335.74238,557.94651L339.13727,560.0481L340.75387,562.47302L342.69381,566.83787L346.73534,569.42445L346.41202,570.71775L342.53215,573.95097L338.32896,575.40592L336.87401,574.75928L333.80244,576.53754L331.37753,579.77077L329.11427,582.68067L327.33599,582.51901L323.77945,579.93243L323.45613,575.40592L324.10277,572.981L322.48616,567.32286L320.38456,565.54458L320.2229,562.958L322.48616,561.98804L324.58776,558.91648L325.07274,557.94651L323.45613,556.16823L323.13281,554.06663Z"},
@@ -121,6 +188,7 @@ function getStatesOutlines(){
 		function mouseOut(d){
 			d3.select("#label").transition().duration(500).style("opacity", 0);      
 		}
+		
 		d3.select(id).selectAll(".state")
 			.data(uStatePaths).enter().append("path").attr("class","state").attr("d",function(d){ return d.d;})
 			.style("fill",function(d){ return data[d.id].color; })

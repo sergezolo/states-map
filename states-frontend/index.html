@@ -2,6 +2,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <title>USA MAP</title>
     <script src="src/index.js"></script>
     <script src="http://d3js.org/d3.v3.min.js"></script>
@@ -11,11 +14,20 @@
 </head>
 
 <body>
+    <div id="state-form">
+        <select class="state-dropdown" id="state-dropdown" onchange="createUserState()"></select>
+    </div>
     <div id="user-form"></div>
     <div class="grid-container">
         <div id="grid-left" class="grid-left">
             <br><div id="username"></div><br>
-            <div id="stateslist"></div>
+            <div id="states">
+                <div id="states-list">
+                    <ul>
+
+                    </ul>
+                </div>
+            </div>
         </div>
 
         <div id="grid-right" class="grid-right">

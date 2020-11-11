@@ -72,3 +72,19 @@ input[type=submit]{
     background-color: #066406;
     color: white;
   }
+
+
+
+
+  .state-dropdown {
+    position: relative;
+    font-family: Arial;
+  }
+  
+  .state-dropdown select {
+    display: none; /*hide original SELECT element:*/
+  }
+  
+  .state-dropdown {
+    background-color: DodgerBlue;
+  }
