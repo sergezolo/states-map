@@ -6,11 +6,9 @@ class UserStatesController < ApplicationController
     end
 
     def create
-        binding.pry
-        
-        state = State.find_by(state: params[:state])
+        state = State.find_by(state: params["_json"])
         user = User.last
-        user_state = UserState.build(user_id: user.id, state_id: state.id)
+        user_state = UserState.new(user_id: user.id, state_id: state.id)
         if user_state.save
             render json: user_state, status: :created, location: user_state
         else

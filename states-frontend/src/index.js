@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	newUserForm();
 	getStatesOutlines();
 	addStateForm();
-
+	createUserState();
 });
 
 function newUserForm() {
@@ -93,7 +93,7 @@ function createUserState() {
 	.then(response => response.json())
 	.then(state => {
 		let x = document.createElement("LI"),
-		t = document.createTextNode(state);
+		t = document.createTextNode(state.state.state);
 		x.appendChild(t);
 		document.querySelector("ul").appendChild(x);
 	})
