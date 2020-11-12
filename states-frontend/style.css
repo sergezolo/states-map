@@ -88,3 +88,40 @@ input[type=submit]{
   .state-dropdown {
     background-color: DodgerBlue;
   }
+
+-------------------------------------------------------------------
+  /* #us-map{
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  path {
+    fill: #2c436d !important;
+  }
+  path:hover, circle:hover {
+    stroke: #002868 !important;
+    stroke-width:2px;
+    stroke-linejoin: round;
+    fill:#066406 !important;
+    cursor: pointer;
+  }
+  #path67 {
+    fill: none !important;
+    stroke: #24375a !important;
+    cursor: default;
+  }
+  #info-box {
+    position: absolute;           
+    text-align: center;
+    padding: 5px;             
+    margin: 0px;
+    font: 12px monospace;        
+    background: #2c436d;;   
+    border: 11px;       
+    border-radius: 7px;           
+    pointer-events: none;
+  }
+   */
