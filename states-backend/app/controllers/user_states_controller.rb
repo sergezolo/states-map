@@ -17,7 +17,12 @@ class UserStatesController < ApplicationController
     end
     
     def destroy
-        user_state = UserState.find(params[:id])
+
+        #binding.pry
+
+        user = User.last
+        state = State.find_by(state: params[:id])
+        user_state = UserState.find_by(user_id: user.id, state_id: state.id)
         user_state.destroy
         render json: :accepted
     end
