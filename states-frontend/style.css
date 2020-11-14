@@ -22,6 +22,24 @@ input[type=submit]:hover {
   background-color: #066406;
   color: white;
 }
+ul li {
+  text-align: left;
+  font-family: "Lucida Console", Monaco, monospace;
+  font-weight: lighter;
+  font: 15px monospace; 
+}
+a:link {
+  color: #b9b7df;
+}
+a:visited {
+  color:  #b9b7df;
+}
+a:hover {
+  color:  #066406;
+}
+a:active {
+  color:  #b9b7df;
+}
 .state{
   fill: #2c436d;
   stroke: #1a1d32;
@@ -40,7 +58,6 @@ input[type=submit]:hover {
   background: #cdd0e5;   
   border: 11px;       
   border-radius: 7px;           
-  pointer-events: none;         
 }
 #label h4{
   margin:0;
@@ -51,11 +68,23 @@ input[type=submit]:hover {
   grid-template-columns: 20% 80%;
 }
 .grid-left {
+  position: relative;
+  height: 100%;
+  display: inline;
   background-color: #24375a;
   text-align: center;
   font: 16px monospace;
   color: #b9b7df;        
-  pointer-events: none;         
+}
+.grid-left-2 {
+  position: absolute;
+  transition: all;
+  opacity: 0;
+  background-color: #24375a;
+  text-align: center;
+  font: 16px monospace;
+  color: #b9b7df; 
+  display: none;       
 }
 .grid-right {
   text-align: center;

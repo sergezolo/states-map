@@ -1,10 +1,9 @@
 const BASE_URL = 'http://localhost:3000';
-const statesForm = document.getElementById("state-form");
 
 document.addEventListener('DOMContentLoaded', () => {
 	newUserForm();
 	getStatesOutlines();
-	createUserState();
+	clickOnStateLinks();
 });
 
 function newUserForm() {
@@ -36,6 +35,7 @@ function createUser() {
 	.then(response => response.json())
 	.then(user => {
 		document.getElementById("username").innerHTML += "Hello, " + `${user.username}` + "!";
+		//document.getElementById("visited-states").innerHTML += "Visited states " + `(${user.user_states.length})` + ":";
 	})
 	clearForm();
 }
@@ -55,12 +55,7 @@ function createUserState(state) {
         }
 	})
 	.then(response => response.json())
-	.then(user_state => {
-		let x = document.createElement("LI"),
-		t = document.createTextNode(user_state.state.state);
-		x.appendChild(t);
-		document.querySelector("ul").appendChild(x);
-	})
+	.then(createStateElement)
 }
 
 function removeUserState(state) {
@@ -73,14 +68,53 @@ function removeUserState(state) {
 	}
 	fetch(BASE_URL + `/user_states/${state}`, configObj)
 	.then(state => {
-		const stateToRemove = state["url"].slice(34);
-		let statesList = document.getElementsByTagName("li");
+		const stateToRemove = state["url"].slice(34).replace("%20", " ");
+		let statesList = document.getElementsByTagName("a");
 		for(let i = 0; i < statesList.length; i++){
 			if(statesList[i].innerHTML === stateToRemove){
-				statesList[i].remove();
+				statesList[i].parentElement.remove();
 			}
 		}
 	})
+}
+
+function createStateElement(user_state){
+	const statesList = document.querySelector("#states-list ul");
+	statesList.innerHTML +=(new State(user_state.state)).render();
+	console.log(new State(user_state.state))
+}
+
+function clickOnStateLinks(){
+	const statesList = document.getElementById("states-list")
+	statesList.addEventListener("click", event => {
+
+		console.log(event.target.dataset.id);
+
+		// console.log(State.find(state => state.id == state_id))
+
+		showStateInfo(event);
+	})
+}
+
+function showStateInfo(){
+	return	(
+			`<div id="grid-left-2" class="grid-left">
+				<h2>&{this.state} (&{this.abbreviation})</h2>
+				<ul>
+				<li>Admission to statehood: &{this.admission_to_statehood}</li>
+				<li>Nickname: &{this.nickname}</li>
+				<li>Capital: &{this.capital}</li>
+				<li>Population (2013): &{this.population_2013}</li>
+				</ul>
+				<br><button type="button" value="Back">
+			</div>`
+	);
+	//document.getElementById("grid-left-2").addEventListener("button", clearState)
+}
+
+function clearState(){
+	const statePage = document.getElementById("grid-left-2");
+	statePage.remove()
 }
 
 function getStatesOutlines(){
@@ -164,3 +198,23 @@ function getStatesOutlines(){
 	uStates.draw("#statesvg", sampleData, labelHtml);
 	d3.select(self.frameElement).style("height", "600px"); 
 })();
+
+  
+class State {
+    constructor(state) {
+		this.id = state.id
+		this.state = state.state
+		this.abbreviation = state.abbreviation
+		this.admission_to_statehood = state.admission_to_statehood
+		this.nickname = state.nickname
+		this.capital = state.capital
+		this.population_2013 = state.population_2013
+    }
+
+    render() {
+        return (`<li>
+					<a href="#" data-id="${this.id}">${this.state}</a>
+            	</li>`
+        )
+    }
+}
