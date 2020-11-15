@@ -1,30 +1,3 @@
-# README
-
-# states-map
-
-## Overview
-
-States-map is a web application created with a Ruby on Rails API on the backend and JavaScript on the frontend. 
-
-***A special shout-out to NPashaP for designing a US map in JavaScript, whose work I've used in my project.***
-(https://gist.github.com/NPashaP/a74faf20b492ad377312#file-block)
-
-This app was designed for travelers whose goal is to visit all 50 states + Washington DC. 
-Users can track their progress and set new travel goals. 
-
-## Install
-
-- fork & clone
-- `cd states-backend`
-- `bundle install`
-- `rake db:migrate`
-- `rake db:seed`
-- `rails s`
-- find 'index.html' file in a 'states-frontend' folder and open it in a web browser of your choice! Enjoy!
-
-## Any contributions you make will be under the MIT Software License
-In short, when you submit code changes, your submissions are understood to be under the same [MIT License](http://choosealicense.com/licenses/mit/) that covers the project. Feel free to contact the maintainers if that's a concern.
-
 MIT License
 
 Copyright (c) 2020 Sergey Zolotukhin

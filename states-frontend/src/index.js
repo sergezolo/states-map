@@ -11,7 +11,7 @@ function newUserForm() {
 							<h2>Welcome traveler!</h2>
 							<h2>What is your name?"</h2><br>
 							<form>
-								<input type="text" id="username" username="username" required minlength="2" placeholder="Name" size="30">
+								<input type="text" id="username" username="username" required minlength="2" placeholder="Name" size="40">
 								<br><input type="submit" value="Lets go!">
 							</form>
 						</div>`;
