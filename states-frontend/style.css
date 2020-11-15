@@ -50,6 +50,7 @@ a:active {
   fill:#066406;
 }
 #label {   
+  z-index:1;
   position: absolute;           
   text-align: center;
   padding: 5px;             
@@ -69,22 +70,23 @@ a:active {
 }
 .grid-left {
   position: relative;
-  height: 100%;
-  display: inline;
   background-color: #24375a;
   text-align: center;
   font: 16px monospace;
   color: #b9b7df;        
 }
-.grid-left-2 {
+.state-info {
   position: absolute;
+  top: 0; 
+  left: 0;
+  width: 100%;
+  height: 100%;
   transition: all;
-  opacity: 0;
   background-color: #24375a;
   text-align: center;
   font: 16px monospace;
   color: #b9b7df; 
-  display: none;       
+  display: none;
 }
 .grid-right {
   text-align: center;
@@ -97,4 +99,5 @@ a:active {
   text-align: center;
   padding: 200px 0;
   background: #1a1d32; 
+  z-index: 1;
 }

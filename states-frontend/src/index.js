@@ -20,7 +20,8 @@ function newUserForm() {
 	document.getElementById("new-user-form").addEventListener("submit", createUser)
 }
 
-function createUser() {
+function createUser(event) {
+	event.preventDefault();
     const user = {
 		username: document.getElementById("username").value,
 	}
@@ -35,7 +36,6 @@ function createUser() {
 	.then(response => response.json())
 	.then(user => {
 		document.getElementById("username").innerHTML += "Hello, " + `${user.username}` + "!";
-		//document.getElementById("visited-states").innerHTML += "Visited states " + `(${user.user_states.length})` + ":";
 	})
 	clearForm();
 }
@@ -75,46 +75,46 @@ function removeUserState(state) {
 				statesList[i].parentElement.remove();
 			}
 		}
+		renderVisitedStatesAmount();
 	})
 }
 
 function createStateElement(user_state){
 	const statesList = document.querySelector("#states-list ul");
 	statesList.innerHTML +=(new State(user_state.state)).render();
-	console.log(new State(user_state.state))
+	renderVisitedStatesAmount();
 }
 
 function clickOnStateLinks(){
 	const statesList = document.getElementById("states-list")
 	statesList.addEventListener("click", event => {
-
-		console.log(event.target.dataset.id);
-
-		// console.log(State.find(state => state.id == state_id))
-
-		showStateInfo(event);
+		const state = State.all.find(state => +state.id === +event.target.dataset.id)
+		showStateInfo(state);
 	})
 }
 
-function showStateInfo(){
-	return	(
-			`<div id="grid-left-2" class="grid-left">
-				<h2>&{this.state} (&{this.abbreviation})</h2>
-				<ul>
-				<li>Admission to statehood: &{this.admission_to_statehood}</li>
-				<li>Nickname: &{this.nickname}</li>
-				<li>Capital: &{this.capital}</li>
-				<li>Population (2013): &{this.population_2013}</li>
-				</ul>
-				<br><button type="button" value="Back">
-			</div>`
-	);
-	//document.getElementById("grid-left-2").addEventListener("button", clearState)
+function showStateInfo(state){
+	let stateInfo = document.getElementById("state-info");
+	stateInfo.style.display = "block";
+	stateInfo.innerHTML =	(`
+								<br><br>
+								<h4>${state.state} (${state.abbreviation})</h4>
+								<ul>
+								<li>Admission to statehood: ${state.admission_to_statehood}</li>
+								<li>Nickname: ${state.nickname}</li>
+								<li>Capital: ${state.capital}</li>
+								<li>Population (2013): ${state.population_2013}</li>
+								</ul>
+								<br><button type="button">Back</button>
+							`);
+	stateInfo.querySelector("button").addEventListener("click", () => stateInfo.style.display = "none")
 }
 
-function clearState(){
-	const statePage = document.getElementById("grid-left-2");
-	statePage.remove()
+function renderVisitedStatesAmount(){
+	const stateList = document.getElementById("states-list");
+	const amount = stateList.querySelectorAll("li").length;
+	const container = document.getElementById("visited-states-amount");
+	container.innerHTML = amount
 }
 
 function getStatesOutlines(){
@@ -201,6 +201,9 @@ function getStatesOutlines(){
 
   
 class State {
+	
+	static all = []
+
     constructor(state) {
 		this.id = state.id
 		this.state = state.state
@@ -209,8 +212,9 @@ class State {
 		this.nickname = state.nickname
 		this.capital = state.capital
 		this.population_2013 = state.population_2013
-    }
-
+		State.all.push(this)
+	}
+	
     render() {
         return (`<li>
 					<a href="#" data-id="${this.id}">${this.state}</a>
