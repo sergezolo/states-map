@@ -1,14 +1,14 @@
 class UserStatesController < ApplicationController
+    before_action :set_user
 
     def index
-        user_states = UserState.all
+        user_states = @user.user_states
         render json: user_states
     end
 
     def create
         state = State.find_by(state: params["_json"])
-        user = User.last
-        user_state = UserState.new(user_id: user.id, state_id: state.id)
+        user_state = @user.user_states.new(state_id: state.id)
         if user_state.save
             render json: user_state, status: :created, location: user_state
         else
@@ -17,14 +17,16 @@ class UserStatesController < ApplicationController
     end
     
     def destroy
-
-        #binding.pry
-
-        user = User.last
         state = State.find_by(state: params[:id])
-        user_state = UserState.find_by(user_id: user.id, state_id: state.id)
+        user_state = @user.user_states.find_by(state_id: state.id)
         user_state.destroy
         render json: :accepted
+    end
+
+private
+
+    def set_user
+        @user = User.find_by_id(params[:user_id])
     end
     
 end

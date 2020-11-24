@@ -35,7 +35,8 @@ function createUser(event) {
 	})
 	.then(response => response.json())
 	.then(user => {
-		document.getElementById("username").innerHTML += "Hello, " + `${user.username}` + "!";
+		currentUser = new User(user);
+		document.getElementById("username").innerHTML += currentUser.renderUser();
 	})
 	clearForm();
 }
@@ -46,7 +47,7 @@ function clearForm(){
 }
 
 function createUserState(state) {
-    fetch(BASE_URL + "/user_states", {
+    fetch(BASE_URL + `/users/${currentUser.id}/user_states`, {
 		method: "POST",
 		body: JSON.stringify(state),
 		headers: { 
@@ -66,9 +67,9 @@ function removeUserState(state) {
             "Accept": "application/json"
         }
 	}
-	fetch(BASE_URL + `/user_states/${state}`, configObj)
+	fetch(BASE_URL + `/users/${currentUser.id}/user_states/${state}`, configObj)
 	.then(state => {
-		const stateToRemove = state["url"].slice(34).replace("%20", " ");
+		const stateToRemove = state["url"].split("user_states/")[1].replace("%20", " ");
 		let statesList = document.getElementsByTagName("a");
 		for(let i = 0; i < statesList.length; i++){
 			if(statesList[i].innerHTML === stateToRemove){
@@ -81,7 +82,7 @@ function removeUserState(state) {
 
 function createStateElement(user_state){
 	const statesList = document.querySelector("#states-list ul");
-	statesList.innerHTML +=(new State(user_state.state)).render();
+	statesList.innerHTML +=(new State(user_state.state)).renderState();
 	renderVisitedStatesAmount();
 }
 
@@ -199,7 +200,19 @@ function getStatesOutlines(){
 	d3.select(self.frameElement).style("height", "600px"); 
 })();
 
-  
+class User {
+ 
+    constructor(user) {
+		this.id = user.id
+		this.username = user.username
+	}
+	
+    renderUser() {
+		return (`<p><data-id="${this.id}">${"Hello, " + `${this.username}` + "!"}</p>`)
+	}
+
+}
+
 class State {
 	
 	static all = []
@@ -215,7 +228,7 @@ class State {
 		State.all.push(this)
 	}
 	
-    render() {
+    renderState() {
         return (`<li>
 					<a href="#" data-id="${this.id}">${this.state}</a>
             	</li>`
