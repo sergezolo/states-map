@@ -4,7 +4,7 @@
 
 ## Overview
 
-States-map is a web application created with a Ruby on Rails API on the backend and JavaScript on the frontend. 
+States-map is a web application created with Ruby on Rails API backend and JavaScript frontend. 
 
 ***A special shout-out to NPashaP for designing a US map in JavaScript, whose work I've used in my project.***
 (https://gist.github.com/NPashaP/a74faf20b492ad377312#file-block)
